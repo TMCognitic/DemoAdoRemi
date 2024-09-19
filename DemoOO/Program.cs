@@ -1,42 +1,22 @@
-﻿namespace DemoOO
+﻿using System.Data.Common;
+using System.Data;
+using DemoOO.Tools;
+using DemoOO.Models.Entities;
+using DemoOO.Models.Repositories;
+using DemoOO.Models.Services;
+
+namespace DemoOO
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Observable observable = new Observable();
-            observable.Notify += (o) => Console.WriteLine($"La valeur a changé : {o.X}");
-  
-            observable.X = 5;
-            observable.X = 7;
-            observable.X = 0;
-        }        
-    }
+            IStudentRepository studentRepository = new StudentService();
 
-    class Observable
-    {
-        public event Action<Observable>? Notify;
-
-        private int _x;
-
-        public int X
-        {
-            get
+            foreach(Student student in studentRepository.Get())
             {
-                return _x;
-            }
-
-            set
-            {
-                if(X != value)
-                {
-                    _x = value;
-                    Notify?.Invoke(this);
-                }
+                Console.WriteLine($"{student.FirstName} {student.LastName}");
             }
         }
     }
-
-    
 }
-
